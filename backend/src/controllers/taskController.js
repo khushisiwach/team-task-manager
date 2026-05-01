@@ -1,7 +1,6 @@
 import Project from '../models/Project.js';
 import Task from '../models/Task.js';
 
-// get user role in project
 const getRole = (project, userId) => {
   const member = project.members.find(
     (m) => m.user.toString() === userId.toString()
@@ -9,7 +8,6 @@ const getRole = (project, userId) => {
   return member ? member.role : null;
 };
 
-// get tasks
 export const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({
@@ -25,7 +23,6 @@ export const getTasks = async (req, res) => {
   }
 };
 
-// create task (only admin)
 export const createTask = async (req, res) => {
   try {
     const { projectId, title, description, dueDate } = req.body;
@@ -58,7 +55,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-// update task
 export const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.taskId);
@@ -74,16 +70,13 @@ export const updateTask = async (req, res) => {
       return res.status(403).json({ message: 'No access' });
     }
 
-    // admin can update everything
     if (role === 'Admin') {
       const { title, description, status } = req.body;
 
       if (title) task.title = title;
       if (description) task.description = description;
       if (status) task.status = status;
-    } 
-    // member can only update status
-    else {
+    } else {
       if (task.assignedTo?.toString() !== req.user._id.toString()) {
         return res.status(403).json({ message: 'Not your task' });
       }
@@ -99,7 +92,6 @@ export const updateTask = async (req, res) => {
   }
 };
 
-// delete task (admin only)
 export const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.taskId);

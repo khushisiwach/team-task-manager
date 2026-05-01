@@ -1,14 +1,12 @@
 import User from '../models/User.js';
 import Project from '../models/Project.js';
 
-// check admin
 const isAdmin = (project, userId) => {
   return project.members.find(
     (m) => m.user.toString() === userId.toString() && m.role === 'Admin'
   );
 };
 
-// get projects
 export const getProjects = async (req, res) => {
   try {
     const projects = await Project.find({
@@ -21,7 +19,6 @@ export const getProjects = async (req, res) => {
   }
 };
 
-// create project
 export const createProject = async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -43,7 +40,6 @@ export const createProject = async (req, res) => {
   }
 };
 
-// add or update member
 export const addOrUpdateMember = async (req, res) => {
   try {
     const { email } = req.body;
@@ -74,7 +70,6 @@ export const addOrUpdateMember = async (req, res) => {
   }
 };
 
-// remove member
 export const removeMember = async (req, res) => {
   try {
     const project = await Project.findById(req.params.projectId);

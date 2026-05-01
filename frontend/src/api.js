@@ -1,7 +1,33 @@
-const API_BASE = 'http://localhost:5000/api';
+const ports = [5002, 5003, 5004];
+let API_BASE = null;
+
+const findServerPort = async () => {
+  for (const port of ports) {
+    try {
+      const response = await fetch(`http://localhost:${port}/api/health`, { 
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        return `http://localhost:${port}/api`;
+      }
+    } catch (error) {
+      continue;
+    }
+  }
+  return `http://localhost:5002/api`;
+};
+
+export const getApiBase = async () => {
+  if (!API_BASE) {
+    API_BASE = await findServerPort();
+  }
+  return API_BASE;
+};
 
 export const apiRequest = async (path, options = {}, token = '') => {
-  const response = await fetch(`${API_BASE}${path}`, {
+  const base = await getApiBase();
+  const response = await fetch(`${base}${path}`, {
     method: options.method || 'GET',
     headers: {
       ...(options.headers || {}),

@@ -9,12 +9,17 @@ function TaskSection({
   onDeleteTask,
 }) {
   return (
-    <div className="space-y-5">
+    <section className="space-y-5 rounded-3xl border border-white/70 bg-white/75 p-4 shadow-[0_12px_40px_rgba(15,23,42,0.08)] backdrop-blur sm:p-6">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          Tasks
+        </p>
+        <h2 className="mt-1 text-xl font-semibold text-slate-900">Task board</h2>
+      </div>
 
-      {/* Create Task */}
       {selectedProject && canManageProject && (
-        <div className="bg-white p-4 rounded shadow-sm">
-          <h2 className="font-semibold mb-2">Create Task</h2>
+        <div className="rounded-3xl border border-slate-200/80 bg-slate-50 p-4">
+          <h2 className="mb-3 font-semibold text-slate-900">Create Task</h2>
 
           <form onSubmit={onCreateTask} className="space-y-2">
             <input
@@ -24,7 +29,7 @@ function TaskSection({
               onChange={(e) =>
                 setTaskForm({ ...taskForm, title: e.target.value })
               }
-              className="w-full border p-2 rounded"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400"
             />
 
             <input
@@ -34,7 +39,7 @@ function TaskSection({
               onChange={(e) =>
                 setTaskForm({ ...taskForm, description: e.target.value })
               }
-              className="w-full border p-2 rounded"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400"
             />
 
             <input
@@ -43,35 +48,33 @@ function TaskSection({
               onChange={(e) =>
                 setTaskForm({ ...taskForm, dueDate: e.target.value })
               }
-              className="w-full border p-2 rounded"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400"
             />
 
-            <button className="bg-blue-600 text-white px-3 py-2 rounded">
+            <button className="rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
               Create
             </button>
           </form>
         </div>
       )}
 
-      {/* Task List */}
-      <div className="bg-white p-4 rounded shadow-sm">
-        <h2 className="font-semibold mb-2">Tasks</h2>
+      <div className="rounded-3xl border border-slate-200/80 bg-white p-4 shadow-sm">
+        <h2 className="mb-3 font-semibold text-slate-900">Tasks</h2>
 
         {tasks.length === 0 ? (
-          <p className="text-sm text-gray-500">No tasks</p>
+          <p className="text-sm text-slate-500">No tasks</p>
         ) : (
           tasks.map((task) => (
-            <div key={task._id} className="border p-3 rounded mb-2">
-
-              <div className="flex justify-between items-center">
-                <p className="font-medium">{task.title}</p>
+            <div key={task._id} className="mb-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 last:mb-0">
+              <div className="flex items-center justify-between">
+                <p className="font-medium text-slate-900">{task.title}</p>
 
                 <select
                   value={task.status || 'To Do'}
                   onChange={(e) =>
                     onStatusChange(task._id, e.target.value)
                   }
-                  className="border p-1 text-sm"
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none"
                 >
                   <option>To Do</option>
                   <option>In Progress</option>
@@ -79,11 +82,11 @@ function TaskSection({
                 </select>
               </div>
 
-              <p className="text-sm text-gray-500">
+              <p className="mt-2 text-sm text-slate-500">
                 {task.description || 'No description'}
               </p>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-slate-500">
                 Due: {task.dueDate
                   ? new Date(task.dueDate).toLocaleDateString()
                   : 'N/A'}
@@ -92,18 +95,16 @@ function TaskSection({
               {canManageProject && (
                 <button
                   onClick={() => onDeleteTask(task._id)}
-                  className="text-red-500 text-sm mt-2"
+                  className="mt-3 text-sm font-medium text-rose-500 transition hover:text-rose-700"
                 >
                   Delete
                 </button>
               )}
-
             </div>
           ))
         )}
       </div>
-
-    </div>
+    </section>
   );
 }
 

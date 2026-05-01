@@ -2,18 +2,36 @@ import mongoose from 'mongoose';
 
 export let dbConnected = false;
 
+const localFallbackUri = 'mongodb://127.0.0.1:27017/team-task-manager';
+
+const connectWithUri = async (uri) => {
+  const conn = await mongoose.connect(uri);
+  return conn;
+};
+
 export const connectDB = async () => {
   try {
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI is missing');
+    const primaryUri = process.env.MONGO_URI;
+
+    if (!primaryUri || primaryUri.includes('<db_password>')) {
+      await connectWithUri(localFallbackUri);
+      dbConnected = true;
+      console.log('MongoDB Connected Successfully (local fallback)');
+      return;
     }
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+
+    await connectWithUri(primaryUri);
     dbConnected = true;
     console.log('MongoDB Connected Successfully');
   } catch (error) {
-    dbConnected = false;
-    console.error('Database connection failed:', error.message);
-    // Do not exit the process here — allow the server to start for local development.
-    // Routes should respond with an appropriate HTTP status when DB operations fail.
+    try {
+      await connectWithUri(localFallbackUri);
+      dbConnected = true;
+      console.warn(`Primary MongoDB connection failed (${error.message}). Using local fallback.`);
+      console.log('MongoDB Connected Successfully (local fallback)');
+    } catch (fallbackError) {
+      dbConnected = false;
+      console.error('Database connection failed:', fallbackError.message);
+    }
   }
 };
