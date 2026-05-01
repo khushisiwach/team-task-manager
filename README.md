@@ -52,20 +52,6 @@ npm run build
 npm start
 ```
 
-The Express server serves the built React app from `frontend/dist` in production.
-
-## Railway Deployment
-
-1. Push the code to GitHub.
-2. Create a new Railway project from the repository.
-3. Add the environment variables in the Railway dashboard.
-4. Set the start command to:
-
-   ```bash
-   npm start
-   ```
-
-5. Make sure MongoDB is available through MongoDB Atlas and the connection string is added to Railway.
 
 ## API Overview
 
