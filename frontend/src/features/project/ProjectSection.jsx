@@ -5,7 +5,6 @@ function ProjectSection({
   projectForm,
   setProjectForm,
   onCreateProject,
-  canCreateProject,
   selectedProject,
   canManageProject,
   currentUserId,
@@ -18,37 +17,35 @@ function ProjectSection({
     <div className="space-y-5">
 
       {/* Create Project */}
-      {canCreateProject && (
-        <div className="bg-white p-4 rounded shadow-sm">
-          <h2 className="font-semibold mb-2">Create Project</h2>
+      <div className="bg-white p-4 rounded shadow-sm">
+        <h2 className="font-semibold mb-2">Create Project</h2>
 
-          <form onSubmit={onCreateProject} className="space-y-2">
-            <input
-              type="text"
-              placeholder="Project name"
-              value={projectForm.name}
-              onChange={(e) =>
-                setProjectForm({ ...projectForm, name: e.target.value })
-              }
-              className="w-full border p-2 rounded"
-            />
+        <form onSubmit={onCreateProject} className="space-y-2">
+          <input
+            type="text"
+            placeholder="Project name"
+            value={projectForm.name}
+            onChange={(e) =>
+              setProjectForm({ ...projectForm, name: e.target.value })
+            }
+            className="w-full border p-2 rounded"
+          />
 
-            <input
-              type="text"
-              placeholder="Description"
-              value={projectForm.description}
-              onChange={(e) =>
-                setProjectForm({ ...projectForm, description: e.target.value })
-              }
-              className="w-full border p-2 rounded"
-            />
+          <input
+            type="text"
+            placeholder="Description"
+            value={projectForm.description}
+            onChange={(e) =>
+              setProjectForm({ ...projectForm, description: e.target.value })
+            }
+            className="w-full border p-2 rounded"
+          />
 
-            <button className="bg-blue-600 text-white px-3 py-2 rounded">
-              Create
-            </button>
-          </form>
-        </div>
-      )}
+          <button className="bg-blue-600 text-white px-3 py-2 rounded">
+            Create
+          </button>
+        </form>
+      </div>
 
       {/* Project List */}
       <div className="bg-white p-4 rounded shadow-sm">

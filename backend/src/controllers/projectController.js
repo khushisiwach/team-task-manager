@@ -30,10 +30,6 @@ export const createProject = async (req, res) => {
       return res.status(400).json({ message: 'Project name required' });
     }
 
-    if (req.user.role !== 'Admin') {
-      return res.status(403).json({ message: 'Only admin can create project' });
-    }
-
     const project = await Project.create({
       name,
       description,

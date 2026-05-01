@@ -1,32 +1,14 @@
-import mongoose from 'mongoose';
+import express from 'express';
+// Make sure both your auth middleware AND the new rbac middleware are imported
+import { protect } from '../middleware/auth.js'; 
+import { requireRole } from '../middleware/rbac.js'; 
 
-const projectSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    description: String,
+const router = express.Router();
 
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
+// Example: Anyone logged in can get projects
+router.get('/', protect, getProjects);
 
-    members: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        role: {
-          type: String,
-          default: 'Member',
-        },
-      },
-    ],
-  },
-  { timestamps: true }
-);
+// Example: ONLY admins can create projects
+router.post('/', protect, requireRole('admin'), createProject); 
 
-export default mongoose.model('Project', projectSchema);
+export default router;

@@ -36,7 +36,6 @@ function App() {
   }, [projects, selectedProjectId]);
 
   const currentUserId = getId(user?._id || user?.id);
-  const isAdminUser = user?.role === 'Admin';
 
   const canManageProject = useMemo(() => {
     if (!selectedProject) return false;
@@ -310,7 +309,6 @@ function App() {
             projectForm={projectForm}
             setProjectForm={setProjectForm}
             onCreateProject={onCreateProject}
-            canCreateProject={isAdminUser}
             selectedProject={selectedProject}
             canManageProject={canManageProject}
             currentUserId={currentUserId}
